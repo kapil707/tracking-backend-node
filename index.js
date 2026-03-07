@@ -11,7 +11,7 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
 //Middleware - plugin
-app.use(express.urlencoded({extended:false}));
+//app.use(express.urlencoded({extended:false}));
 
 app.use(logReqRes("log.txt"));
 

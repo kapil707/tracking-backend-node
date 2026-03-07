@@ -1,0 +1,12 @@
+/******git**********/
+git pull 
+git add "-A"
+git commit -m "add"
+git pull
+git push
+
+git add "-A"
+git commit -m "add"
+
+git branch -M website-v-21
+git push -u origin website-v-21

@@ -1,4 +1,4 @@
-const db = require('../config/db');
+const db = require('../config/db'); // Ensure this is a pool.promise()
 
 class Tracking {
     static async saveLocation(orderId, lat, lng) {
@@ -6,5 +6,4 @@ class Tracking {
         return db.execute(sql, [orderId, lat, lng]);
     }
 }
-
 module.exports = Tracking;

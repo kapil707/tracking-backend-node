@@ -1,4 +1,5 @@
 const express = require('express');
+const {logReqRes} = require("./middlewares");
 const http = require('http');
 const { Server } = require('socket.io');
 const cors = require('cors');
@@ -8,6 +9,11 @@ const PORT = 3000;
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
+
+//Middleware - plugin
+app.use(express.urlencoded({extended:false}));
+
+app.use(logReqRes("log.txt"));
 
 app.use(cors());
 app.use(express.json());

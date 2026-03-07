@@ -10,3 +10,9 @@ git commit -m "add"
 
 git branch -M website-v-21
 git push -u origin website-v-21
+
+/***********************************************************/
+npm install
+
+/home/drdistributorsco/public_html/tracking-backend-node/.env
+cd ~/public_html/tracking-backend-node

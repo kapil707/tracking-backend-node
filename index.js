@@ -1,21 +1,32 @@
-//const http = require('http');
 const express = require('express');
-
-const {logReqRes} = require("./middlewares");
-const userRouter = require('./routes/main');
+const http = require('http');
+const { Server } = require('socket.io');
+const cors = require('cors');
+require('dotenv').config();
+const PORT = 3000;
 
 const app = express();
-const PORT = 8000;
+const server = http.createServer(app);
+const io = new Server(server, { cors: { origin: "*" } });
 
-//Middleware - plugin
-app.use(express.urlencoded({extended:false}));
+app.use(cors());
+app.use(express.json());
 
-app.use(logReqRes("log.txt"));
+// Routes setup
+const trackingRoutes = require('./routes/trackingRoutes')(io);
+app.use('/api', trackingRoutes);
 
-app.use("/users",userRouter);
+// Socket Logic
+io.on('connection', (socket) => {
+    console.log('User Connected:', socket.id);
+    
+    socket.on('updateLocation', async (data) => {
+        const Tracking = require('./models/trackingModel');
+        await Tracking.saveLocation(data.orderId, data.lat, data.lng);
+        io.emit(`locationUpdate-${data.orderId}`, data);
+    });
+});
 
-app.listen(PORT, () => console.log("server start " + PORT));
-
-// const myServer = http.createServer(app);
-
-// myServer.listen(8000, () => console.log("server start 8000"));
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 MVC Server running on port ${PORT}`);
+});

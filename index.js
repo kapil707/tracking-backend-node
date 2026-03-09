@@ -11,13 +11,12 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
 //Middleware - plugin
-// Ye do lines add karna lazmi hain 
-app.use(express.json()); // JSON data ke liye
-app.use(express.urlencoded({ extended: true })); // Form-data ke liye
+//app.use(express.urlencoded({extended:false}));
+
+//app.use(logReqRes("log.txt"));
+
 app.use(cors());
-
-app.use(logReqRes("log.txt"));
-
+app.use(express.json());
 
 // Routes setup
 const trackingRoutes = require('./routes/trackingRoutes')(io);

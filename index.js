@@ -6,13 +6,17 @@ const cors = require('cors');
 require('dotenv').config();
 const PORT = 3000;
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
 //Middleware - plugin
-app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+// app.use(express.json());
+// app.use(express.urlencoded({extended:false}));
 
 //app.use(logReqRes("log.txt"));
 

@@ -19,7 +19,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(logReqRes("log.txt"));
 // ------------------------------------------
 
-
 // Routes setup
 //const trackingRoutes = require('./routes/trackingRoutes')(io);
 const trackingRoutes = require('./routes/trackingRoutes');

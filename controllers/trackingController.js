@@ -24,12 +24,17 @@ const Tracking = require('../models/trackingModel');
 //     // }
 // };
 
-async function insertme(req, res, io) {
+async function insertme(req, res) {
+    console.log("Full Request Body:", req.body); // Agar ye undefined hai, toh middleware missing hai
 
-    const { orderId, lat, lng } = req.body;
-        
-    // Debugging ke liye log lagayein
-    console.log("Data received:", req.body);
+    if (!req.body) {
+        return res.status(400).send("Body is missing! Middleware check karein.");
+    }
+
+    const { user_id } = req.body; 
+    console.log("Received user_id:", user_id);
+    
+    res.json({ message: "Success", id: user_id });
 }
 
 

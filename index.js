@@ -6,38 +6,35 @@ const cors = require('cors');
 require('dotenv').config();
 const PORT = 3000;
 
-
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
 
-const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-
 //Middleware - plugin
-// app.use(express.json());
-// app.use(express.urlencoded({extended:false}));
+// --- Is Tarteeb (Order) mein karke dekhein ---
+app.use(cors()); // Sabse pehle CORS
+app.use(express.json()); 
+app.use(express.urlencoded({ extended: true }));
+app.use(logReqRes("log.txt"));
+// ------------------------------------------
 
-//app.use(logReqRes("log.txt"));
-
-app.use(cors());
 
 // Routes setup
-const trackingRoutes = require('./routes/trackingRoutes')(io);
+//const trackingRoutes = require('./routes/trackingRoutes')(io);
+const trackingRoutes = require('./routes/trackingRoutes');
 app.use('/api', trackingRoutes);
 
 // Socket Logic
-io.on('connection', (socket) => {
-    console.log('User Connected:', socket.id);
+// io.on('connection', (socket) => {
+//     console.log('User Connected:', socket.id);
     
-    socket.on('updateLocation', async (data) => {
-        const Tracking = require('./models/trackingModel');
-        await Tracking.saveLocation(data.orderId, data.lat, data.lng);
-        io.emit(`locationUpdate-${data.orderId}`, data);
-    });
-});
+//     socket.on('updateLocation', async (data) => {
+//         const Tracking = require('./models/trackingModel');
+//         await Tracking.saveLocation(data.orderId, data.lat, data.lng);
+//         io.emit(`locationUpdate-${data.orderId}`, data);
+//     });
+// });
 
 server.listen(PORT, '0.0.0.0', () => {
     console.log(`🚀 MVC Server running on port ${PORT}`);

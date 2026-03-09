@@ -31,6 +31,7 @@ io.on('connection', (socket) => {
         const Tracking = require('./models/trackingModel');
         await Tracking.saveLocation(data.orderId, data.lat, data.lng);
         io.emit(`locationUpdate-${data.orderId}`, data);
+         console.log('Update Location:', socket.id);
     });
 });
 

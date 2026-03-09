@@ -24,17 +24,29 @@ const Tracking = require('../models/trackingModel');
 //     // }
 // };
 
-async function insertme(req, res) {
-    console.log("Full Request Body:", req.body); // Agar ye undefined hai, toh middleware missing hai
+async function insertme(req, res , io) {
 
-    if (!req.body) {
-        return res.status(400).send("Body is missing! Middleware check karein.");
+    try {
+        const { orderId, lat, lng } = req.body;
+        
+        // Debugging ke liye log lagayein
+        console.log("Data received:", req.body);
+
+        if (!orderId || !lat || !lng) {
+            return res.status(400).json({ error: "Missing orderId, lat, or lng" });
+        }
+
+        // DB mein save karein
+        await Tracking.saveLocation(orderId, lat, lng);
+        
+        // Live update bhejein
+        io.emit(`locationUpdate-${orderId}`, { orderId, lat, lng });
+
+        return res.status(200).json({ status: "Success", message: "Location Logged" });
+    } catch (err) {
+        console.error("Controller Error:", err.message);
+        return res.status(500).json({ error: "Database or Server Error" });
     }
-
-    const { user_id } = req.body; 
-    console.log("Received user_id:", user_id);
-    
-    res.json({ message: "Success", id: user_id });
 }
 
 

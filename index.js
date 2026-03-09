@@ -20,8 +20,8 @@ app.use(logReqRes("log.txt"));
 // ------------------------------------------
 
 // Routes setup
-//const trackingRoutes = require('./routes/trackingRoutes')(io);
-const trackingRoutes = require('./routes/trackingRoutes');
+const trackingRoutes = require('./routes/trackingRoutes')(io);
+//const trackingRoutes = require('./routes/trackingRoutes');
 app.use('/api', trackingRoutes);
 
 // Socket Logic
